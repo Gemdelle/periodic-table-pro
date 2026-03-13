@@ -449,6 +449,10 @@ html, body, #root {
     height: auto;
     z-index: 2;
     transition: filter 0.2s ease;
+
+    &--question {
+      width: 22%;
+    }
   }
 
   &__cell-overlay {
@@ -592,9 +596,8 @@ html, body, #root {
   }
 
   &__grid {
-    margin-top: 1%;
     flex: 1;
-    padding: 4%;
+    padding: 1.8%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 10px;
@@ -644,8 +647,8 @@ html, body, #root {
   }
 
   &__item-img {
-    width: 60%;
-    height: 60%;
+    width: 65%;
+    height: 65%;
     object-fit: contain;
     margin-bottom: 5%;
 
@@ -657,15 +660,18 @@ html, body, #root {
 
   &__item-symbol {
     color: #c9a227;
-    font-size: 0.9rem;
-    font-weight: bold;
+    font-size: 1vw;
+    height: 30%;
+    // font-weight: bold;
     // background-color: purple;
   }
 
   &__item-name {
     color: #eec58c;
-    font-size: 0.5vw;
+    font-size: 0.55vw;
     text-align: center;
+    height: 15%;
     letter-spacing: 0.05vw;
+    // background-color: red;
   }
 }

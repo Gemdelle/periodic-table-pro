@@ -164,7 +164,14 @@ function App() {
       >
         <img src={elementFrame} alt="" className="periodic-table__cell-frame" />
         {element && renderAtomicNumber(element.atomicNumber)}
-        {isGuessed && (
+        {element && !isGuessed && (
+          <img
+            src={questionMark}
+            alt="?"
+            className="periodic-table__cell-element-img periodic-table__cell-element-img--question"
+          />
+        )}
+        {isGuessed && getElementImage(element.name) && (
           <>
             <img
               src={getElementImage(element.name)}
@@ -175,6 +182,9 @@ function App() {
               <span className="periodic-table__cell-symbol">{element.symbol}</span>
             </div>
           </>
+        )}
+        {isGuessed && !getElementImage(element.name) && (
+          <span className="periodic-table__cell-symbol-only">{element.symbol}</span>
         )}
       </div>
     );

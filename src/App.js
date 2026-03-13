@@ -164,7 +164,7 @@ function App() {
       >
         <img src={elementFrame} alt="" className="periodic-table__cell-frame" />
         {element && renderAtomicNumber(element.atomicNumber)}
-        {isGuessed && element.hasImage && (
+        {isGuessed && (
           <>
             <img
               src={getElementImage(element.name)}
@@ -175,9 +175,6 @@ function App() {
               <span className="periodic-table__cell-symbol">{element.symbol}</span>
             </div>
           </>
-        )}
-        {isGuessed && !element.hasImage && (
-          <span className="periodic-table__cell-symbol-only">{element.symbol}</span>
         )}
       </div>
     );
@@ -233,18 +230,11 @@ function App() {
             </div>
             <img src={mainElementFrame} alt="" className="game__current-element-frame" />
             <div className="game__current-element-img-container">
-              {currentElement && currentElement.hasImage && (
+              {currentElement && (
                 <img
                   src={getElementImage(currentElement.name)}
                   alt={currentElement.name}
                   className="game__current-element-img"
-                />
-              )}
-              {currentElement && !currentElement.hasImage && (
-                <img
-                  src={questionMark}
-                  alt="?"
-                  className="game__current-element-img game__current-element-img--question"
                 />
               )}
             </div>
@@ -330,19 +320,11 @@ function App() {
               {elements.map(element => (
                 <div key={element.atomicNumber} className="chart__item">
                   <div className="chart__item-content">
-                    {element.hasImage ? (
-                      <img
-                        src={getElementImage(element.name)}
-                        alt={element.name}
-                        className="chart__item-img"
-                      />
-                    ) : (
-                      <img
-                        src={questionMark}
-                        alt="?"
-                        className="chart__item-img chart__item-img--question"
-                      />
-                    )}
+                    <img
+                      src={getElementImage(element.name)}
+                      alt={element.name}
+                      className="chart__item-img"
+                    />
                     <span className="chart__item-symbol">{element.symbol}</span>
                     <span className="chart__item-name">
                       {language === 'en' ? element.name : element.nameEs}

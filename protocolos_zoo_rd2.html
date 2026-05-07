@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Protocolos Zoo RD2</title>
+<style>
+:root{--bg:#07111f;--panel:#12223b;--panel2:#1b3151;--text:#eef6ff;--muted:#acc0e2;--line:#2e4a71;--accent:#59d7ff;--accent2:#b98cff;--ok:#68e6a0;--bad:#ff6f91;--warn:#ffd166;--card:#f8fbff;--ink:#091423}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at top left,#173b6a,#07111f 48%,#050912);color:var(--text);min-height:100vh} button,input,select{font:inherit} button{border:0;border-radius:14px;padding:10px 14px;background:var(--card);color:var(--ink);font-weight:850;cursor:pointer;box-shadow:0 5px 14px #0004} button:hover{transform:translateY(-1px)} button.secondary{background:#223653;color:var(--text);border:1px solid #45658f} button.accent{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06101e}.top{position:sticky;top:0;z-index:10;background:#07111fee;backdrop-filter:blur(10px);border-bottom:1px solid #203453}.bar{max-width:1180px;margin:auto;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:10px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-size:25px}.stats{display:flex;gap:8px;flex-wrap:wrap}.pill{background:#14243d;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:7px 11px;font-weight:750}.wrap{max-width:1180px;margin:auto;padding:22px 18px}.view{display:none}.view.active{display:block}.box{background:linear-gradient(180deg,#12213b,#0e182b);border:1px solid #294366;border-radius:24px;padding:22px;box-shadow:0 18px 50px #0005}.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;margin-bottom:18px}.title{font-size:42px;line-height:1.05;margin:0 0 12px}.sub{color:var(--muted);font-size:17px;line-height:1.62}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.mini{font-size:13px;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}.card{background:#0f1f37;border:1px solid #2e4a71;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px;min-height:210px}.card:hover{border-color:var(--accent)}.emoji{font-size:54px;line-height:1}.bigemoji{font-size:90px;line-height:1}.tag{font-size:12px;border-radius:999px;padding:5px 9px;width:max-content;font-weight:900;color:#06172a;background:#b8efff}.tag.red{background:#9ef0b2}.tag.transport{background:#d1a9ff}.tag.app{background:#ffe28a}.tag.mec{background:#c9f7a8}.tag.wan{background:#ffb4cc}.searchbar{display:grid;grid-template-columns:1fr 220px;gap:10px;margin-bottom:18px}input,select{background:#eef6ff;color:#091629;border:0;border-radius:14px;padding:12px}.kv{display:grid;grid-template-columns:180px 1fr;gap:8px;margin-top:14px}.kv div{padding:11px;border-bottom:1px solid #2a4265}.kv b{color:#baf1ff}.game-layout{display:grid;grid-template-columns:280px 1fr;gap:16px}.target{background:#0d1a2e;border:1px solid #304b72;border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.choice-col{background:#0d1a2e;border:1px solid #304b72;border-radius:18px;padding:12px}.choice-col h3{margin:0 0 10px}.choice{width:100%;text-align:left;margin:5px 0;background:#f8fbff;color:#091423;border:3px solid transparent;box-shadow:none}.choice.selected{border-color:var(--warn);background:#fff1bf}.choice.good{border-color:var(--ok);background:#dfffea}.choice.bad{border-color:var(--bad);background:#ffe0e8}.feedback{border-radius:18px;padding:14px;background:#0d1b30;border:1px solid #2b4569;line-height:1.55;margin-top:12px}.feedback.good{background:#0b2d1c;border-color:#2eca72}.feedback.bad{background:#351220;border-color:#ff6f91}.flash{min-height:340px;display:grid;place-items:center}.flashcard{width:100%;max-width:760px;min-height:330px;background:#f8fbff;color:#091423;border-radius:28px;padding:30px;display:flex;flex-direction:column;justify-content:center;gap:12px;box-shadow:0 15px 40px #0007}.options{display:grid;gap:10px;margin-top:12px}.options button{text-align:left}
+.all-table-wrap{overflow:auto}
+.all-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+.all-table th,.all-table td{border:1px solid #2e4a71;padding:6px 8px;vertical-align:middle;line-height:1.2}
+.all-table th{background:#0d1a2e;color:#baf1ff;text-align:left}
+.all-table select{width:100%;padding:6px 8px;border-radius:10px;border:0;background:#f3f8ff;color:#091423;font-size:13px}
+.all-table select.good{outline:3px solid var(--ok)}
+.all-table select.bad{outline:3px solid var(--bad)}
+.all-emoji{font-size:28px;text-align:center;white-space:nowrap;width:52px}
+.all-name{font-size:13px;white-space:nowrap;min-width:150px}
+.all-layer{font-size:12px;color:#d9f4ff;white-space:nowrap;min-width:145px}
+.compact-note{font-size:13px;color:#d9f4ff;background:#132845;border:1px solid #365b86;border-radius:14px;padding:8px 10px;margin-top:10px}
+@media(max-width:900px){.hero,.game-layout,.choices,.searchbar{grid-template-columns:1fr}.title{font-size:34px}.kv{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top"><div class="bar"><div class="brand"><div class="logo">🦊</div><div><b>Protocolos Zoo</b><div class="mini">versión simple que funciona con clicks</div></div></div><div class="stats"><button id="btnHome" class="secondary">Mapa</button><button id="btnCards" class="secondary">Tarjetas</button><button id="btnGame" class="secondary">Unir todo</button><button id="btnAllGame" class="secondary">Todos juntos</button><button id="btnQuiz" class="accent">Quiz visual</button></div></div></div>
+<main class="wrap">
+<section id="home" class="view active"><div class="hero"><div class="box"><h1 class="title">Protocolos Zoo 🐾</h1><p class="sub">Ahora el juego no usa drag and drop. Solo tocás opciones. Elegí la <b>sigla</b>, el <b>significado</b> y <b>lo que hace</b> para cada animal.</p><div class="row"><button id="homeGame" class="accent">Jugar Unir todo</button><button id="homeAllGame">Todos juntos</button><button id="homeCards">Tarjetas</button><button id="homeQuiz" class="secondary">Quiz visual</button></div></div><div class="box"><h2>Sin cosas raras</h2><p class="sub">Cada ronda muestra un animal. En cada columna elegís una opción. Cuando apretás comprobar, te marca qué está bien y qué está mal.</p></div></div><div class="searchbar"><input id="search" placeholder="Buscar: DNS, TCP, correo, multicast..." /><select id="filter"><option value="all">Todos</option><option>Mecanismo</option><option>Enlace / WAN</option><option>Red</option><option>Transporte</option><option>Aplicación</option></select></div><div id="grid" class="grid"></div></section>
+<section id="detail" class="view"><div class="box"><div class="row"><button id="backHome1" class="secondary">← Volver</button><button id="prevProto">← Anterior</button><button id="nextProto">Siguiente →</button></div><div id="detailContent"></div></div></section>
+<section id="cards" class="view"><div class="box"><div class="row"><button id="backHome2" class="secondary">← Mapa</button><button id="prevCard">Anterior</button><button id="nextCard">Siguiente</button><button id="flipCard" class="accent">Girar</button><span id="cardPill" class="pill"></span></div><h2>Tarjetas</h2><div class="flash"><div id="flashCard" class="flashcard"></div></div></div></section>
+<section id="game" class="view"><div class="box"><div class="row"><button id="backHome3" class="secondary">← Mapa</button><button id="restartGame">Reiniciar</button><span id="gamePill" class="pill"></span></div><h2>Unir todo 🧩</h2><p class="sub">Elegí una opción en cada columna y apretá comprobar.</p><div id="gameContent"></div></div></section>
+<section id="allgame" class="view"><div class="box"><div class="row"><button id="backHome5" class="secondary">← Mapa</button><button id="restartAllGame">Reiniciar</button><span id="allGamePill" class="pill"></span></div><h2>Todos juntos 🧩</h2><p class="sub">Una fila por protocolo. Tenés el <b>emoji</b> y el <b>nombre del personaje</b>, y vos elegís la <b>capa</b>, la <b>sigla</b> y <b>qué hace</b>. Cuando elegís una opción, desaparece de los otros desplegables de esa columna.</p><div id="allGameContent"></div></div></section>
+<section id="quiz" class="view"><div class="box"><div class="row"><button id="backHome4" class="secondary">← Mapa</button><button id="restartQuiz">Reiniciar</button><span id="quizPill" class="pill"></span></div><h2>Quiz visual 🧠</h2><div id="quizContent"></div></div></section>
+</main>
+<script>
+const protocols=[
+{o:1,n:'Stop-and-Wait',f:'Protocolo de parada y espera',l:'Mecanismo',c:'Enlace / Acceso a la red',e:'🐢',a:'la tortuga mensajera',s:'Envía una trama y espera confirmación.',d:'Manda una sola trama, espera ACK y retransmite si vence el timeout.',m:'Tortuga = una cosa a la vez.'},
+{o:2,n:'Go-Back-N',f:'Envío continuo con rechazo simple',l:'Mecanismo',c:'Enlace / Acceso a la red',e:'🚂',a:'el tren que vuelve atrás',s:'Si una trama falla, vuelve desde ahí.',d:'Envía varias tramas, pero ante error retransmite la fallida y las posteriores.',m:'Tren = vuelve desde el vagón fallido.'},
+{o:3,n:'Selective Repeat',f:'Envío continuo con rechazo selectivo',l:'Mecanismo',c:'Enlace / Acceso a la red',e:'🐿️',a:'la ardilla que guarda',s:'Solo retransmite lo que falló.',d:'Guarda tramas correctas en buffer y pide solo la faltante.',m:'Ardilla = guarda en buffer.'},
+{o:4,n:'CRC',f:'Cyclic Redundancy Check',l:'Mecanismo',c:'Enlace / Acceso a la red',e:'🕵️',a:'el detective de errores',s:'Detecta si algo llegó corrupto.',d:'Usa un resto de verificación; si no coincide, detecta error.',m:'Detective = revisa pistas.'},
+{o:5,n:'FEC',f:'Forward Error Correction',l:'Mecanismo',c:'Enlace / Acceso a la red',e:'🩹',a:'el médico de errores',s:'Corrige sin pedir retransmisión.',d:'Agrega redundancia para reconstruir errores o pérdidas.',m:'Médico = cura sin pedir otra copia.'},
+{o:6,n:'X.25',f:'Protocolo WAN X.25',l:'Enlace / WAN',c:'Enlace / Acceso a la red',e:'🐘',a:'el elefante antiguo',s:'WAN vieja, robusta y controlada.',d:'Usa circuitos virtuales y mucho control para redes menos confiables.',m:'Elefante = antiguo y pesado.'},
+{o:7,n:'Frame Relay',f:'Protocolo Frame Relay',l:'Enlace / WAN',c:'Enlace / Acceso a la red',e:'🦊',a:'el zorro veloz de WAN',s:'WAN con tramas variables y DLCI.',d:'Transporta tramas por circuitos virtuales identificados por DLCI.',m:'Zorro = rápido y liviano.'},
+{o:8,n:'ATM',f:'Asynchronous Transfer Mode',l:'Enlace / WAN',c:'Enlace / Acceso a la red',e:'🐝',a:'la abeja de celdas',s:'Corta todo en celdas fijas.',d:'Usa celdas de 53 bytes: 5 de cabecera y 48 de datos.',m:'Abeja = celdas iguales.'},
+{o:9,n:'IP',f:'Internet Protocol',l:'Red',c:'Red / Internet',e:'🗺️',a:'la paloma cartógrafa',s:'Direcciona y enruta paquetes.',d:'Lleva datagramas entre redes usando direcciones IP.',m:'Mapa = decide camino.'},
+{o:10,n:'ARP',f:'Address Resolution Protocol',l:'Red',c:'Red / Internet',e:'🐶',a:'el perro rastreador',s:'Busca la MAC de una IP conocida.',d:'Pregunta en la LAN quién tiene cierta IP y obtiene su MAC.',m:'Perro = olfatea la MAC.'},
+{o:11,n:'RARP',f:'Reverse ARP',l:'Red',c:'Red / Internet',e:'🔄',a:'la flecha inversa',s:'De MAC a IP.',d:'Permitía obtener una IP a partir de una MAC conocida.',m:'Flecha circular = camino inverso.'},
+{o:12,n:'ICMP',f:'Internet Control Message Protocol',l:'Red',c:'Red / Internet',e:'🐤',a:'el canario avisador',s:'Manda avisos y errores de red.',d:'Reporta problemas y permite ping con Echo Request/Reply.',m:'Canario = avisa.'},
+{o:13,n:'IGMP',f:'Internet Group Management Protocol',l:'Red',c:'Red / Internet',e:'🐟',a:'el pez de cardumen',s:'Administra grupos multicast.',d:'Gestiona hosts que se unen a grupos multicast.',m:'Pez = va en grupo.'},
+{o:14,n:'TCP',f:'Transmission Control Protocol',l:'Transporte',c:'Transporte',e:'🐻',a:'el oso constructor',s:'Confiable, ordenado y con conexión.',d:'Usa conexión, números de secuencia, ACK, retransmisiones y ventana.',m:'Oso = fuerte y prolijo.'},
+{o:15,n:'UDP',f:'User Datagram Protocol',l:'Transporte',c:'Transporte',e:'🐇',a:'la liebre express',s:'Rápido, simple y sin conexión.',d:'Envía datagramas con puertos, sin garantizar entrega ni orden.',m:'Liebre = velocidad.'},
+{o:16,n:'SCTP',f:'Stream Control Transmission Protocol',l:'Transporte',c:'Transporte',e:'🐙',a:'el pulpo multitarea',s:'Confiable con varios flujos.',d:'Ofrece multistreaming y multihoming.',m:'Pulpo = muchos flujos.'},
+{o:17,n:'FTP',f:'File Transfer Protocol',l:'Aplicación',c:'Aplicación',e:'🐜',a:'la hormiga cargadora',s:'Mueve archivos completos.',d:'Transfiere archivos usando TCP.',m:'Hormiga = carga archivos.'},
+{o:18,n:'HTTP',f:'HyperText Transfer Protocol',l:'Aplicación',c:'Aplicación',e:'🕸️',a:'la araña web',s:'Hace funcionar la web.',d:'Permite pedir y recibir páginas, recursos y APIs.',m:'Araña = web.'},
+{o:19,n:'SMTP',f:'Simple Mail Transfer Protocol',l:'Aplicación',c:'Aplicación',e:'🕊️',a:'la paloma cartero',s:'Envía correo.',d:'Transfiere mensajes de correo hacia servidores o entre servidores.',m:'Paloma = lleva mensajes.'},
+{o:20,n:'POP3',f:'Post Office Protocol',l:'Aplicación',c:'Aplicación',e:'🐧',a:'el pingüino del buzón',s:'Baja correo desde el servidor.',d:'Recupera mensajes desde un buzón remoto.',m:'Pingüino = trae cartas.'},
+{o:21,n:'TELNET',f:'Terminal Network',l:'Aplicación',c:'Aplicación',e:'🦎',a:'el lagarto remoto',s:'Terminal remota en texto plano.',d:'Permite acceso remoto a consola sin cifrado.',m:'Lagarto = se mete en otra máquina.'},
+{o:22,n:'DNS',f:'Domain Name System',l:'Aplicación',c:'Aplicación',e:'🦉',a:'el búho bibliotecario',s:'Traduce nombre a IP.',d:'Resuelve dominios legibles a direcciones IP.',m:'Búho = busca en biblioteca.'},
+{o:23,n:'TFTP',f:'Trivial File Transfer Protocol',l:'Aplicación',c:'Aplicación',e:'🐞',a:'la mariquita mini',s:'Transfiere archivos de forma simple.',d:'Hace transferencia básica usando UDP.',m:'Mariquita = archivo chiquito.'},
+{o:24,n:'SNMP',f:'Simple Network Management Protocol',l:'Aplicación',c:'Aplicación',e:'🦝',a:'el mapache inspector',s:'Monitorea dispositivos.',d:'Consulta estados y eventos de equipos de red.',m:'Mapache = inspecciona.'},
+{o:25,n:'DHCP',f:'Dynamic Host Configuration Protocol',l:'Aplicación',c:'Aplicación',e:'🐣',a:'el pollito repartidor',s:'Reparte IP automáticamente.',d:'Entrega IP, máscara, gateway y DNS a hosts.',m:'Pollito = reparte direcciones.'}
+];
+let current=0, cardIndex=0, flipped=false, gameOrder=[], gameIndex=0, gameScore=0, gameChoice={n:null,f:null,s:null}, quizOrder=[], quizIndex=0, quizScore=0;
+const $=id=>document.getElementById(id);
+function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$(id).classList.add('active');window.scrollTo(0,0)}
+function cls(l){return l==='Red'?'red':l==='Transporte'?'transport':l==='Aplicación'?'app':l==='Enlace / WAN'?'wan':'mec'}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function wrong(field,p){return shuffle(protocols.filter(x=>x.n!==p.n)).slice(0,4).map(x=>x[field])}
+function opts(field,p){return shuffle([p[field],...wrong(field,p)])}
+function renderGrid(){let q=$('search').value.toLowerCase(), f=$('filter').value;let arr=protocols.filter(p=>(f==='all'||p.l===f)&&(p.n+p.f+p.s+p.d+p.a).toLowerCase().includes(q));$('grid').innerHTML=arr.map(p=>`<div class="card" data-open="${protocols.indexOf(p)}"><div class="emoji">${p.e}</div><span class="tag ${cls(p.l)}">${p.l}</span><h3>${p.n}</h3><div class="mini">${p.f}</div><p><b>${p.a}</b></p><p>${p.s}</p></div>`).join('');document.querySelectorAll('[data-open]').forEach(el=>el.addEventListener('click',()=>openProto(Number(el.dataset.open))))}
+function openProto(i){current=i;let p=protocols[i];$('detailContent').innerHTML=`<div class="row" style="justify-content:space-between"><div><span class="tag ${cls(p.l)}">${p.l}</span><h1>${p.n}</h1><p class="sub">${p.f}</p></div><div class="bigemoji">${p.e}</div></div><div class="kv"><div><b>Animal</b></div><div>${p.e} ${p.a}</div><div><b>Qué hace</b></div><div>${p.d}</div><div><b>Frase</b></div><div>${p.s}</div><div><b>Memoria visual</b></div><div>${p.m}</div></div>`;show('detail')}
+function startCards(){cardIndex=current;flipped=false;drawCard();show('cards')}
+function drawCard(){let p=protocols[cardIndex];$('cardPill').textContent=`${cardIndex+1}/${protocols.length}`;$('flashCard').innerHTML=flipped?`<h2>${p.n}</h2><p><b>Hace:</b> ${p.d}</p><p><b>Frase:</b> ${p.s}</p><p><b>Memoria:</b> ${p.m}</p>`:`<div class="bigemoji">${p.e}</div><span class="tag ${cls(p.l)}">${p.l}</span><h1>${p.n}</h1><p>${p.a}</p>`}
+function startGame(){gameOrder=shuffle(protocols);gameIndex=0;gameScore=0;renderGame();show('game')}
+function renderGame(){if(gameIndex>=gameOrder.length){$('gameContent').innerHTML=`<div class="feedback good"><h2>Terminaste 🏁</h2><p>Puntaje: <b>${gameScore}/${protocols.length*3}</b></p><button id="againGame" class="accent">Jugar otra vez</button></div>`;$('againGame').onclick=startGame;return}gameChoice={n:null,f:null,s:null};let p=gameOrder[gameIndex];$('gamePill').textContent=`${gameIndex+1}/${protocols.length} · ${gameScore} aciertos`;$('gameContent').innerHTML=`<div class="game-layout"><div class="target"><div class="bigemoji">${p.e}</div><span class="tag ${cls(p.l)}">${p.l}</span><h3>${p.a}</h3><p>${p.m}</p></div><div><div class="choices"><div class="choice-col"><h3>Sigla</h3><div id="col-n"></div></div><div class="choice-col"><h3>Significado</h3><div id="col-f"></div></div><div class="choice-col"><h3>Qué hace</h3><div id="col-s"></div></div></div><div class="row" style="margin-top:14px"><button id="checkGame" class="accent">Comprobar</button><button id="mixGame" class="secondary">Mezclar esta ronda</button></div><div id="gameFeedback"></div></div></div>`;buildChoices('n',opts('n',p));buildChoices('f',opts('f',p));buildChoices('s',opts('s',p));$('checkGame').onclick=checkGame;$('mixGame').onclick=renderGame}
+function buildChoices(kind,values){let col=$('col-'+kind);values.forEach(v=>{let b=document.createElement('button');b.className='choice';b.textContent=v;b.onclick=()=>{gameChoice[kind]=v;col.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')};col.appendChild(b)})}
+function checkGame(){let p=gameOrder[gameIndex], pts=0;['n','f','s'].forEach(k=>{let ok=gameChoice[k]===p[k];if(ok)pts++;document.querySelectorAll('#col-'+k+' .choice').forEach(b=>{if(b.textContent===p[k])b.classList.add('good');else if(b.classList.contains('selected'))b.classList.add('bad')})});gameScore+=pts;$('gameFeedback').innerHTML=`<div class="feedback ${pts===3?'good':'bad'}"><b>${pts}/3</b><p>${p.e} ${p.n} — ${p.f}</p><p>${p.s}</p><button id="nextGame">Siguiente</button></div>`;$('nextGame').onclick=()=>{gameIndex++;renderGame()}}
+function startQuiz(){quizOrder=shuffle(protocols);quizIndex=0;quizScore=0;drawQuiz();show('quiz')}
+function drawQuiz(){if(quizIndex>=quizOrder.length){$('quizContent').innerHTML=`<div class="feedback good"><h2>Resultado ${quizScore}/${quizOrder.length}</h2><button id="againQuiz">Repetir</button></div>`;$('againQuiz').onclick=startQuiz;return}let p=quizOrder[quizIndex], mode=quizIndex%3, q, ans, choices;if(mode===0){q=`¿Qué protocolo representa ${p.e} ${p.a}?`;ans=p.n;choices=opts('n',p)}else if(mode===1){q=`¿Qué hace ${p.n}?`;ans=p.s;choices=opts('s',p)}else{q=`¿Cuál es el significado de ${p.n}?`;ans=p.f;choices=opts('f',p)}$('quizPill').textContent=`${quizIndex+1}/${quizOrder.length} · ${quizScore} correctas`;$('quizContent').innerHTML=`<div class="feedback"><h3>${q}</h3><div class="options" id="quizOptions"></div><div id="quizFeedback"></div></div>`;choices.forEach(c=>{let b=document.createElement('button');b.textContent=c;b.onclick=()=>{let ok=c===ans;if(ok)quizScore++;$('quizFeedback').innerHTML=`<div class="feedback ${ok?'good':'bad'}">${ok?'✅ Correcto':'❌ Incorrecto'}<p>Correcta: ${ans}</p><button id="nextQuiz">Siguiente</button></div>`;$('nextQuiz').onclick=()=>{quizIndex++;drawQuiz()}};$('quizOptions').appendChild(b)})}
+
+function allOpts(field){
+  return shuffle(protocols.map(p=>p[field]));
+}
+
+function layerOpts(){
+  return shuffle([...new Set(protocols.map(p => p.c || p.l))]);
+}
+function getSelectOptions(field){
+  if(field === 'c') return layerOpts();
+  return allOpts(field);
+}
+function refreshDropdownOptions(field){
+  const selects = [...document.querySelectorAll(`.all-table select[data-field="${field}"]`)];
+  const selectedBySelect = new Map(selects.map(sel => [sel, decodeURIComponent(sel.value || '')]));
+  const used = new Set([...selectedBySelect.values()].filter(Boolean));
+  selects.forEach(sel => {
+    const current = selectedBySelect.get(sel);
+    const values = getSelectOptions(field);
+    sel.innerHTML = `<option value="">${field === 'c' ? 'Elegí capa' : field === 'n' ? 'Elegí sigla' : 'Elegí qué hace'}</option>` +
+      values
+        .filter(v => v === current || !used.has(v))
+        .map(v => `<option value="${encodeURIComponent(v)}">${v}</option>`)
+        .join('');
+    if(current) sel.value = encodeURIComponent(current);
+  });
+}
+function attachAllGameSelectHandlers(){
+  ['c','n','s'].forEach(field => {
+    document.querySelectorAll(`.all-table select[data-field="${field}"]`).forEach(sel => {
+      sel.onchange = () => refreshDropdownOptions(field);
+    });
+  });
+}
+
+function startAllGame(){
+  let rows = protocols.map((p,idx)=>`
+    <tr data-index="${idx}">
+      <td class="all-emoji">${p.e}</td>
+      <td class="all-name">${p.a}</td>
+      <td>
+        <select data-field="c">
+          <option value="">Elegí capa</option>
+          ${layerOpts().map(v=>`<option value="${encodeURIComponent(v)}">${v}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <select data-field="n">
+          <option value="">Elegí sigla</option>
+          ${allOpts('n').map(v=>`<option value="${encodeURIComponent(v)}">${v}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <select data-field="s">
+          <option value="">Elegí qué hace</option>
+          ${allOpts('s').map(v=>`<option value="${encodeURIComponent(v)}">${v}</option>`).join('')}
+        </select>
+      </td>
+    </tr>
+  `).join('');
+  $('allGamePill').textContent=`${protocols.length} protocolos · ${protocols.length*3} elecciones`;
+  $('allGameContent').innerHTML=`
+    <div class="all-table-wrap">
+      <table class="all-table">
+        <thead>
+          <tr><th>Dibujo</th><th>Nombre</th><th>Capa</th><th>Sigla</th><th>Qué hace</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="compact-note">Tip: las opciones ya usadas desaparecen de los otros desplegables de la misma columna. Nota: “Mecanismo” no es una capa TCP/IP separada. Stop-and-Wait, Go-Back-N, Selective Repeat, CRC y FEC se ubican en Enlace / Acceso a la red porque trabajan con tramas, control de flujo o errores.</div>
+    <div class="row" style="margin-top:12px">
+      <button id="checkAllGame" class="accent">Comprobar todo</button>
+      <button id="mixAllGame" class="secondary">Mezclar opciones</button>
+    </div>
+    <div id="allGameFeedback"></div>`;
+  $('checkAllGame').onclick=checkAllGame;
+  $('mixAllGame').onclick=startAllGame;
+  attachAllGameSelectHandlers();
+  show('allgame');
+}
+function checkAllGame(){
+  let total=protocols.length*3, score=0;
+  let recap=[];
+  document.querySelectorAll('.all-table tbody tr').forEach(row=>{
+    const p=protocols[Number(row.dataset.index)];
+    const cap=row.querySelector('select[data-field="c"]');
+    const sig=row.querySelector('select[data-field="n"]');
+    const fun=row.querySelector('select[data-field="s"]');
+    const chosenCap=decodeURIComponent(cap.value||'');
+    const chosenSig=decodeURIComponent(sig.value||'');
+    const chosenFun=decodeURIComponent(fun.value||'');
+    const correctCap=p.c || p.l;
+    cap.classList.remove('good','bad');
+    sig.classList.remove('good','bad');
+    fun.classList.remove('good','bad');
+    if(chosenCap===correctCap){cap.classList.add('good'); score++;} else cap.classList.add('bad');
+    if(chosenSig===p.n){sig.classList.add('good'); score++;} else sig.classList.add('bad');
+    if(chosenFun===p.s){fun.classList.add('good'); score++;} else fun.classList.add('bad');
+    recap.push(`<tr><td>${p.e} <b>${p.n}</b></td><td>${p.a}</td><td>${correctCap}</td><td>${p.f}</td><td>${p.s}</td></tr>`);
+  });
+  $('allGamePill').textContent=`${score}/${total}`;
+  $('allGameFeedback').innerHTML=`
+    <div class="feedback ${score===total?'good':'bad'}">
+      <h3>${score}/${total}</h3>
+      <p><b>Regla:</b> primero asociá el animal con la capa; después con la sigla y la función.</p>
+      <div class="all-table-wrap" style="margin-top:12px">
+        <table class="all-table">
+          <thead><tr><th>Protocolo</th><th>Nombre</th><th>Capa</th><th>Significado</th><th>Qué hace</th></tr></thead>
+          <tbody>${recap.join('')}</tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+function init(){['btnHome','backHome1','backHome2','backHome3','backHome4','backHome5'].forEach(id=>$(id).onclick=()=>show('home'));$('btnCards').onclick=startCards;$('homeCards').onclick=startCards;$('btnGame').onclick=startGame;$('homeGame').onclick=startGame;$('btnAllGame').onclick=startAllGame;$('homeAllGame').onclick=startAllGame;$('restartAllGame').onclick=startAllGame;$('btnQuiz').onclick=startQuiz;$('homeQuiz').onclick=startQuiz;$('restartGame').onclick=startGame;$('restartQuiz').onclick=startQuiz;$('prevProto').onclick=()=>openProto((current-1+protocols.length)%protocols.length);$('nextProto').onclick=()=>openProto((current+1)%protocols.length);$('prevCard').onclick=()=>{cardIndex=(cardIndex-1+protocols.length)%protocols.length;flipped=false;drawCard()};$('nextCard').onclick=()=>{cardIndex=(cardIndex+1)%protocols.length;flipped=false;drawCard()};$('flipCard').onclick=()=>{flipped=!flipped;drawCard()};$('search').oninput=renderGrid;$('filter').onchange=renderGrid;renderGrid()}
+init();
+</script>
+<script>
+(function () {
+  const pages = [
+    { label: 'TCP-IP Layers', file: 'TCP-IP Layers.html' },
+    { label: 'Preview', file: 'preview.html' },
+    { label: 'Protocolos Zoo RD2', file: 'protocolos_zoo_rd2.html' },
+    { label: 'Entrenador Diagramas TP', file: 'rd2_entrenador_diagramas_tp.html' },
+    { label: 'Redes Parcial', file: 'redes_parcial.html' }
+  ];
+  const currentFile = decodeURIComponent(window.location.pathname.split('/').pop() || '');
+  const basePath = window.location.pathname.replace(/[^/]*$/, '');
+  const css = `
+    .app-nav-portal{position:fixed;left:12px;top:12px;z-index:99999;width:220px;background:rgba(7,17,31,.95);border:1px solid #2e4a71;border-radius:14px;padding:10px;box-shadow:0 8px 24px rgba(0,0,0,.35);font-family:Inter,Segoe UI,Arial,sans-serif}
+    .app-nav-portal__title{font-size:12px;color:#acc0e2;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+    .app-nav-portal__back,.app-nav-portal__link{display:block;width:100%;margin:0 0 6px 0;padding:8px 10px;border-radius:10px;border:1px solid #45658f;background:#223653;color:#eef6ff;text-decoration:none;font-size:13px;font-weight:700}
+    .app-nav-portal__back{background:linear-gradient(135deg,#59d7ff,#b98cff);color:#06101e;border:0}
+    .app-nav-portal__link--active{background:#59d7ff;color:#07111f;border-color:#59d7ff}
+    @media (max-width: 800px){.app-nav-portal{position:static;width:auto;margin:10px}}
+  `;
+  const style = document.createElement('style');
+  style.textContent = css;
+  document.head.appendChild(style);
+  const container = document.createElement('nav');
+  container.className = 'app-nav-portal';
+  const links = pages.map((page) => {
+    const href = `${basePath}${encodeURI(page.file)}`;
+    const active = page.file === currentFile ? ' app-nav-portal__link--active' : '';
+    return `<a class="app-nav-portal__link${active}" href="${href}">${page.label}</a>`;
+  }).join('');
+  container.innerHTML = `
+    <div class="app-nav-portal__title">Navegacion</div>
+    <a class="app-nav-portal__back" href="${basePath}">Volver al menu</a>
+    ${links}
+  `;
+  document.body.appendChild(container);
+})();
+</script>
+</body>
+</html>

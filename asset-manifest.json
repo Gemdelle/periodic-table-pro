@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/periodic-table-pro/static/css/main.1434cac8.css",
-    "main.js": "/periodic-table-pro/static/js/main.ab93e3c5.js",
+    "main.css": "/periodic-table-pro/static/css/main.40637ff4.css",
+    "main.js": "/periodic-table-pro/static/js/main.6fc2318a.js",
     "static/media/—Pngtree—technology energy ball_5396982.png": "/periodic-table-pro/static/media/—Pngtree—technology energy ball_5396982.5320ca8be4cfff400b65.png",
     "static/media/Polonium.png": "/periodic-table-pro/static/media/Polonium.778eeac48e902da7dd2f.png",
     "static/media/Darmstadtium.png": "/periodic-table-pro/static/media/Darmstadtium.e540b8d1930060cd4b89.png",
@@ -148,11 +148,11 @@
     "static/media/1.png": "/periodic-table-pro/static/media/1.9501784e4b15b8547117.png",
     "static/media/click.wav": "/periodic-table-pro/static/media/click.91940e3f5c0dacec1c6c.wav",
     "index.html": "/periodic-table-pro/index.html",
-    "main.1434cac8.css.map": "/periodic-table-pro/static/css/main.1434cac8.css.map",
-    "main.ab93e3c5.js.map": "/periodic-table-pro/static/js/main.ab93e3c5.js.map"
+    "main.40637ff4.css.map": "/periodic-table-pro/static/css/main.40637ff4.css.map",
+    "main.6fc2318a.js.map": "/periodic-table-pro/static/js/main.6fc2318a.js.map"
   },
   "entrypoints": [
-    "static/css/main.1434cac8.css",
-    "static/js/main.ab93e3c5.js"
+    "static/css/main.40637ff4.css",
+    "static/js/main.6fc2318a.js"
   ]
 }

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TCP/IP Layers Quest</title>
+<style>
+:root{
+  --bg:#07111f; --panel:#12223b; --panel2:#1b3151; --text:#eef6ff; --muted:#acc0e2;
+  --line:#2e4a71; --accent:#59d7ff; --accent2:#b98cff; --ok:#68e6a0; --bad:#ff6f91;
+  --warn:#ffd166; --card:#f8fbff; --ink:#091423;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at top left,#173b6a,#07111f 48%,#050912);color:var(--text);min-height:100vh}
+button,select{font:inherit}
+button{border:0;border-radius:14px;padding:10px 14px;background:var(--card);color:var(--ink);font-weight:850;cursor:pointer;box-shadow:0 5px 14px #0004}
+button:hover{transform:translateY(-1px)}
+button.secondary{background:#223653;color:var(--text);border:1px solid #45658f}
+button.accent{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#06101e}
+.top{position:sticky;top:0;z-index:10;background:#07111fee;backdrop-filter:blur(10px);border-bottom:1px solid #203453}
+.bar{max-width:1220px;margin:auto;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-size:25px}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.pill{background:#14243d;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:7px 11px;font-weight:750}
+.wrap{max-width:1220px;margin:auto;padding:22px 18px}
+.view{display:none} .view.active{display:block}
+.box{background:linear-gradient(180deg,#12213b,#0e182b);border:1px solid #294366;border-radius:24px;padding:22px;box-shadow:0 18px 50px #0005}
+.hero{display:grid;grid-template-columns:1.08fr .92fr;gap:18px;margin-bottom:18px}
+.title{font-size:42px;line-height:1.05;margin:0 0 12px}
+.sub{color:var(--muted);font-size:17px;line-height:1.62}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.mini{font-size:13px;color:var(--muted)}
+.note{background:#132845;border:1px solid #365b86;border-radius:16px;padding:12px;line-height:1.55}
+.stack{display:grid;gap:12px}
+.layer-card{display:grid;grid-template-columns:86px 1fr;gap:14px;background:#0f1f37;border:1px solid #2e4a71;border-radius:20px;padding:16px}
+.layer-card:hover{border-color:var(--accent)}
+.emoji{font-size:48px;display:grid;place-items:center}
+.layer-card h3{margin:0 0 6px}
+.tag{font-size:12px;border-radius:999px;padding:5px 9px;width:max-content;font-weight:900;color:#06172a;background:#b8efff}
+.quizbox{max-width:980px;margin:auto}
+.question{font-size:23px;line-height:1.35;margin-bottom:14px}
+.options{display:grid;gap:10px}
+.option{text-align:left;background:#f8fbff;color:#091423;border:3px solid transparent;box-shadow:none}
+.option.selected{border-color:var(--warn);background:#fff1bf}
+.option.correct{border-color:var(--ok);background:#dfffea}
+.option.wrong{border-color:var(--bad);background:#ffe0e8}
+.feedback{border-radius:18px;padding:14px;background:#0d1b30;border:1px solid #2b4569;line-height:1.55;margin-top:12px}
+.feedback.good{background:#0b2d1c;border-color:#2eca72}
+.feedback.bad{background:#351220;border-color:#ff6f91}
+.progress{height:10px;background:#081527;border:1px solid #294366;border-radius:999px;overflow:hidden}
+.progress > div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%}
+.tablewrap{overflow:auto}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border:1px solid #2e4a71;padding:10px;vertical-align:top}
+.table th{background:#0d1a2e;color:#baf1ff}
+.good{outline:3px solid var(--ok)}
+.bad{outline:3px solid var(--bad)}
+select{width:100%;padding:9px 10px;border-radius:12px;border:0;background:#f3f8ff}
+.stackgame td:first-child{font-weight:900}
+.hint{font-size:15px;color:#d9f4ff;background:#132845;border:1px solid #365b86;border-radius:14px;padding:10px}
+@media(max-width:900px){.hero{grid-template-columns:1fr} .title{font-size:34px} .layer-card{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="bar">
+    <div class="brand"><div class="logo">🧱</div><div><b>TCP/IP Layers Quest</b><div class="mini">capas, funciones, protocolos y dónde va cada cosa</div></div></div>
+    <div class="stats">
+      <button id="btnHome" class="secondary">Inicio</button>
+      <button id="btnMap" class="secondary">Mapa</button>
+      <button id="btnGame" class="accent">Juego pila completa</button>
+      <button id="btnQuiz" class="secondary">Quiz</button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section id="home" class="view active">
+    <div class="hero">
+      <div class="box">
+        <h1 class="title">Capas TCP/IP sin perderte 😌</h1>
+        <p class="sub">Te armé algo bien enfocado a lo que suelen preguntar: <b>qué hace cada capa</b>, <b>qué protocolos/mecanismos van en cada capa</b> y <b>qué dispositivo / unidad de datos se asocia</b>.</p>
+        <div class="row">
+          <button id="homeGame" class="accent">Jugar con todas las capas juntas</button>
+          <button id="homeQuiz">Hacer quiz</button>
+        </div>
+      </div>
+      <div class="box">
+        <h2>Ojo con esto</h2>
+        <div class="note">
+          Acá te lo dejé en <b>5 capas</b> para que se entienda mejor: <b>Aplicación, Transporte, Red/Internet, Enlace y Física</b>. Los mecanismos como CRC, FEC, Stop-and-Wait, Go-Back-N y Selective Repeat los vas a ver dentro de <b>Enlace / Acceso a la red</b>.<br><br>
+          Si en clase te lo toman como <b>TCP/IP de 4 capas</b>, normalmente <b>Enlace + Física</b> se agrupan como <b>Acceso a la red</b>.
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>Mapa rápido de capas</h2>
+      <div id="stack" class="stack"></div>
+    </div>
+  </section>
+
+  <section id="game" class="view">
+    <div class="box">
+      <div class="row">
+        <button id="backHome1" class="secondary">← Inicio</button>
+        <button id="restartGame" class="secondary">Reiniciar</button>
+        <span class="pill" id="gamePill"></span>
+      </div>
+      <h2>Juego: toda la pila junta 🧩</h2>
+      <p class="sub">Completá <b>todas las capas juntas</b>. En cada fila elegí: <b>qué hace</b>, <b>qué ejemplos/protocolos/mecanismos tiene</b> y <b>su unidad de datos</b>. Después tocá comprobar.</p>
+      <div id="gameContent"></div>
+    </div>
+  </section>
+
+  <section id="quiz" class="view">
+    <div class="box quizbox">
+      <div class="row">
+        <button id="backHome2" class="secondary">← Inicio</button>
+        <button id="restartQuiz" class="secondary">Reiniciar quiz</button>
+        <span class="pill" id="quizPill"></span>
+      </div>
+      <h2>Quiz capas</h2>
+      <div class="progress"><div id="quizProgress"></div></div>
+      <div id="quizContent" style="margin-top:18px"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const LAYERS = [{"name": "Aplicación", "order": 5, "emoji": "🧩", "aka": "Application", "what": "Brinda servicios de red a las aplicaciones del usuario.", "examples": "HTTP, FTP, SMTP, POP3, TELNET, DNS, TFTP, SNMP, DHCP", "pdu": "Datos / mensaje", "device": "Host / servidor", "hint": "Es la capa más cercana al usuario."}, {"name": "Transporte", "order": 4, "emoji": "🚚", "aka": "Transport", "what": "Comunicación extremo a extremo entre aplicaciones; usa puertos y puede dar confiabilidad.", "examples": "TCP, UDP, SCTP", "pdu": "Segmento / datagrama", "device": "Host", "hint": "Acá viven TCP y UDP."}, {"name": "Red / Internet", "order": 3, "emoji": "🗺️", "aka": "Internet / Network", "what": "Direcciona y enruta paquetes entre redes usando direcciones IP.", "examples": "IP, IPv4, IPv6, ARP, RARP, ICMP, IGMP, NAT/PAT", "pdu": "Paquete / datagrama IP", "device": "Router", "hint": "Acá viven IP y el enrutamiento."}, {"name": "Enlace / Acceso a la red", "order": 2, "emoji": "🔗", "aka": "Link / Network Access", "what": "Entrega dentro de la red local, usa MAC, tramas y acceso al medio.", "examples": "Ethernet, Stop-and-Wait, Go-Back-N, Selective Repeat, CRC, FEC, X.25, Frame Relay, ATM", "pdu": "Trama", "device": "Switch / NIC", "hint": "Acá aparecen MAC y tramas."}, {"name": "Física", "order": 1, "emoji": "⚡", "aka": "Physical", "what": "Transmite bits por el medio físico mediante señales eléctricas, ópticas o inalámbricas.", "examples": "Cables, conectores, señales, repetidor, hub", "pdu": "Bits", "device": "Hub / repetidor / medio", "hint": "Es la capa de los bits y el cable."}];
+const QUIZ = [{"q": "¿Qué capa del modelo TCP/IP está más cerca del usuario?", "options": ["Aplicación", "Transporte", "Red / Internet", "Enlace / Acceso a la red", "Física"], "a": 0, "hint": "La capa de Aplicación es la interfaz entre la red y los programas del usuario."}, {"q": "¿En qué capa trabaja TCP?", "options": ["Transporte", "Aplicación", "Red / Internet", "Enlace / Acceso a la red", "Física"], "a": 0, "hint": "TCP es un protocolo de Transporte porque comunica aplicaciones extremo a extremo."}, {"q": "¿En qué capa trabaja UDP?", "options": ["Transporte", "Aplicación", "Red / Internet", "Enlace / Acceso a la red", "Física"], "a": 0, "hint": "UDP también es de Transporte; usa puertos y no garantiza entrega."}, {"q": "¿Qué hace principalmente la capa de Red / Internet?", "options": ["Direcciona y enruta paquetes entre redes", "Mueve bits por el cable", "Brinda servicios a las aplicaciones", "Usa MAC y arma tramas locales", "Define el formato del navegador"], "a": 0, "hint": "La capa de Red / Internet se ocupa del direccionamiento IP y del enrutamiento."}, {"q": "¿Qué protocolo pertenece a la capa de Aplicación?", "options": ["DNS", "TCP", "IP", "Ethernet", "ARP"], "a": 0, "hint": "DNS es de Aplicación porque presta un servicio a programas: resolver nombres a IP."}, {"q": "¿Qué protocolo pertenece a la capa de Red / Internet?", "options": ["IP", "TCP", "HTTP", "SMTP", "Ethernet"], "a": 0, "hint": "IP vive en la capa de Red / Internet."}, {"q": "¿Qué protocolo pertenece a la capa de Enlace / Acceso a la red?", "options": ["Ethernet", "UDP", "IP", "DNS", "ICMP"], "a": 0, "hint": "Ethernet trabaja con tramas y MAC, por eso es de Enlace."}, {"q": "¿Qué unidad de datos usa la capa Física?", "options": ["Bits", "Trama", "Paquete", "Segmento", "Mensaje"], "a": 0, "hint": "La Física solo ve bits viajando por el medio."}, {"q": "¿Qué unidad de datos usa la capa de Enlace / Acceso a la red?", "options": ["Trama", "Bits", "Segmento", "Paquete", "Mensaje"], "a": 0, "hint": "Enlace encapsula los datos en tramas."}, {"q": "¿Qué unidad de datos usa la capa de Red / Internet?", "options": ["Paquete / datagrama IP", "Bits", "Trama", "Segmento", "Mensaje"], "a": 0, "hint": "La capa IP maneja paquetes o datagramas."}, {"q": "¿Qué unidad de datos usa la capa de Transporte?", "options": ["Segmento / datagrama", "Bits", "Trama", "Paquete", "Mensaje"], "a": 0, "hint": "TCP usa segmentos; UDP suele hablar de datagramas."}, {"q": "¿Qué capa utiliza puertos?", "options": ["Transporte", "Aplicación", "Red / Internet", "Enlace / Acceso a la red", "Física"], "a": 0, "hint": "Los puertos identifican aplicaciones dentro de la capa de Transporte."}, {"q": "¿En qué capa aparecen las direcciones MAC?", "options": ["Enlace / Acceso a la red", "Red / Internet", "Transporte", "Aplicación", "Física"], "a": 0, "hint": "MAC pertenece a la red local y se usa en Enlace."}, {"q": "¿En qué capa aparecen las direcciones IP?", "options": ["Red / Internet", "Enlace / Acceso a la red", "Aplicación", "Transporte", "Física"], "a": 0, "hint": "IP es el direccionamiento lógico de la capa de Red / Internet."}, {"q": "¿Qué dispositivo se asocia mejor a la capa de Red / Internet?", "options": ["Router", "Hub", "Cable UTP", "Aplicación web", "Conector RJ45"], "a": 0, "hint": "Router enruta paquetes IP entre redes."}, {"q": "¿Qué dispositivo se asocia mejor a la capa de Enlace / Acceso a la red?", "options": ["Switch", "Router", "Servidor DNS", "Aplicación FTP", "Repetidor óptico"], "a": 0, "hint": "Switch trabaja con tramas y MAC en la LAN."}, {"q": "¿Qué dispositivo se asocia mejor a la capa Física?", "options": ["Hub / repetidor", "Router", "Switch capa 2", "Cliente HTTP", "Servidor DHCP"], "a": 0, "hint": "Hub y repetidor no interpretan tramas ni paquetes: solo señales/bits."}, {"q": "¿Qué capa brinda confiabilidad y control de flujo con TCP?", "options": ["Transporte", "Aplicación", "Red / Internet", "Enlace / Acceso a la red", "Física"], "a": 0, "hint": "Eso lo hace TCP dentro de Transporte."}, {"q": "Si te preguntan dónde viven HTTP, DNS y DHCP, la respuesta es:", "options": ["Aplicación", "Transporte", "Red / Internet", "Enlace / Acceso a la red", "Física"], "a": 0, "hint": "Todos prestan servicios a programas/usuarios: son de Aplicación."}, {"q": "Si te preguntan dónde viven ARP, ICMP e IGMP, la respuesta es:", "options": ["Red / Internet", "Transporte", "Aplicación", "Enlace / Acceso a la red", "Física"], "a": 0, "hint": "En esta materia suelen ubicarse junto a IP en la capa de Red / Internet."}, {"q": "¿Qué capa del modelo TCP/IP se ocupa de transmitir señales por el medio?", "options": ["Física", "Enlace / Acceso a la red", "Red / Internet", "Transporte", "Aplicación"], "a": 0, "hint": "La Física trabaja con medios, señales y bits."}, {"q": "¿Qué capa del modelo TCP/IP se ocupa de la entrega local en la LAN?", "options": ["Enlace / Acceso a la red", "Aplicación", "Transporte", "Red / Internet", "Física"], "a": 0, "hint": "La entrega local, MAC y tramas pertenecen a Enlace."}, {"q": "¿Qué capa suele unirse con Física cuando te enseñan el TCP/IP de 4 capas?", "options": ["Enlace / Acceso a la red", "Aplicación", "Transporte", "Red / Internet", "Ninguna"], "a": 0, "hint": "En el modelo de 4 capas, Enlace + Física se suelen agrupar como Acceso a la red."}, {"q": "¿Qué opción describe mejor a la capa de Transporte?", "options": ["Comunicación extremo a extremo entre procesos/aplicaciones", "Ruteo entre redes", "Traducción de nombres", "Transmisión de señales", "Uso de MAC en la LAN"], "a": 0, "hint": "Transporte conecta aplicaciones y usa puertos."}, {"q": "¿Qué opción describe mejor a la capa de Aplicación?", "options": ["Servicios de red para programas del usuario", "Direcciones MAC y tramas", "Bits sobre el medio", "Ruteo entre redes", "Control eléctrico del cable"], "a": 0, "hint": "Aplicación no es “la app” sola: es la capa de servicios para las apps."}];
+
+let quizOrder = [];
+let quizIndex = 0;
+let quizScore = 0;
+let selectedOption = null;
+
+const $ = id => document.getElementById(id);
+function show(id){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function shuffle(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+function renderMap(){
+  const stack = $('stack');
+  stack.innerHTML = LAYERS.slice().sort((a,b)=>b.order-a.order).map(layer => `
+    <div class="layer-card">
+      <div class="emoji">${layer.emoji}</div>
+      <div>
+        <span class="tag">Capa ${layer.order}</span>
+        <h3>${layer.name}</h3>
+        <p><b>Qué hace:</b> ${layer.what}</p>
+        <p><b>Qué hay:</b> ${layer.examples}</p>
+        <p><b>PDU:</b> ${layer.pdu}</p>
+        <p class="mini">${layer.hint}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildOptions(field){
+  return shuffle(LAYERS.map(x => x[field]));
+}
+
+function startGame(){
+  const rows = LAYERS.slice().sort((a,b)=>b.order-a.order);
+  const tbody = rows.map(layer => `
+    <tr data-name="${layer.name}">
+      <td>${layer.order}. ${layer.emoji} ${layer.name}</td>
+      <td>
+        <select data-field="what">
+          <option value="">Elegí función</option>
+          ${buildOptions('what').map(v => `<option value="${encodeURIComponent(v)}">${v}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <select data-field="examples">
+          <option value="">Elegí ejemplos</option>
+          ${buildOptions('examples').map(v => `<option value="${encodeURIComponent(v)}">${v}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <select data-field="pdu">
+          <option value="">Elegí PDU</option>
+          ${buildOptions('pdu').map(v => `<option value="${encodeURIComponent(v)}">${v}</option>`).join('')}
+        </select>
+      </td>
+    </tr>
+  `).join('');
+
+  $('gamePill').textContent = '5 capas · 15 elecciones';
+  $('gameContent').innerHTML = `
+    <div class="tablewrap">
+      <table class="table stackgame">
+        <thead>
+          <tr>
+            <th>Capa</th>
+            <th>¿Qué hace?</th>
+            <th>¿Qué hay / ejemplos?</th>
+            <th>PDU</th>
+          </tr>
+        </thead>
+        <tbody>${tbody}</tbody>
+      </table>
+    </div>
+    <div class="row" style="margin-top:14px">
+      <button id="checkGame" class="accent">Comprobar todo</button>
+    </div>
+    <div id="gameFeedback"></div>
+  `;
+  $('checkGame').onclick = checkGame;
+  show('game');
+}
+
+function checkGame(){
+  const rows = [...document.querySelectorAll('.stackgame tbody tr')];
+  let score = 0;
+  let total = LAYERS.length * 3;
+  let recap = [];
+  rows.forEach(row => {
+    const name = row.dataset.name;
+    const layer = LAYERS.find(x => x.name === name);
+    const selects = row.querySelectorAll('select');
+    const fields = ['what','examples','pdu'];
+    selects.forEach((sel, idx) => {
+      const chosen = decodeURIComponent(sel.value || '');
+      const correct = layer[fields[idx]];
+      sel.classList.remove('good','bad');
+      if(chosen === correct){
+        sel.classList.add('good');
+        score++;
+      } else {
+        sel.classList.add('bad');
+      }
+    });
+    recap.push(`<tr><td><b>${layer.name}</b></td><td>${layer.what}</td><td>${layer.examples}</td><td>${layer.pdu}</td></tr>`);
+  });
+  $('gameFeedback').innerHTML = `
+    <div class="feedback ${score===total ? 'good' : 'bad'}">
+      <h3>${score}/${total}</h3>
+      <p><b>Mini regla para acordarte:</b> Aplicación = servicios; Transporte = puertos/TCP-UDP; Red = IP/ruteo; Enlace = MAC/tramas; Física = bits/medio.</p>
+      <div class="hint">Tip memoria rápida: <b>Mensaje → Segmento → Paquete → Trama → Bits</b>.</div>
+      <div class="tablewrap" style="margin-top:12px">
+        <table class="table">
+          <thead><tr><th>Capa</th><th>Qué hace</th><th>Qué hay</th><th>PDU</th></tr></thead>
+          <tbody>${recap.join('')}</tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function startQuiz(){
+  quizOrder = shuffle(QUIZ);
+  quizIndex = 0;
+  quizScore = 0;
+  selectedOption = null;
+  drawQuiz();
+  show('quiz');
+}
+
+function drawQuiz(){
+  if(quizIndex >= quizOrder.length){
+    $('quizPill').textContent = `Final · ${quizScore}/${quizOrder.length}`;
+    $('quizProgress').style.width = '100%';
+    $('quizContent').innerHTML = `<div class="feedback good"><h2>Terminaste</h2><p>Resultado: <b>${quizScore}/${quizOrder.length}</b></p><button id="againQuiz" class="accent">Repetir</button></div>`;
+    $('againQuiz').onclick = startQuiz;
+    return;
+  }
+  const item = quizOrder[quizIndex];
+  selectedOption = null;
+  const shuffled = shuffle(item.options.map((txt, idx) => ({txt, idx})));
+  $('quizPill').textContent = `${quizIndex+1}/${quizOrder.length} · ${quizScore} correctas`;
+  $('quizProgress').style.width = `${(quizIndex/quizOrder.length)*100}%`;
+  $('quizContent').innerHTML = `
+    <div class="question">${item.q}</div>
+    <div class="options">
+      ${shuffled.map((o, pos)=>`<button class="option" data-idx="${o.idx}"><b>${'ABCDE'[pos]}.</b> ${o.txt}</button>`).join('')}
+    </div>
+    <div class="row" style="margin-top:14px"><button id="checkQuiz" class="accent">Responder</button></div>
+    <div id="quizFeedback"></div>
+  `;
+  document.querySelectorAll('.option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedOption = Number(btn.dataset.idx);
+      document.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+  });
+  $('checkQuiz').onclick = () => checkQuiz(item);
+}
+
+function checkQuiz(item){
+  if(selectedOption === null){
+    $('quizFeedback').innerHTML = `<div class="feedback bad">Elegí una opción primero.</div>`;
+    return;
+  }
+  const ok = selectedOption === item.a;
+  if(ok) quizScore++;
+  document.querySelectorAll('.option').forEach(btn => {
+    const idx = Number(btn.dataset.idx);
+    if(idx === item.a) btn.classList.add('correct');
+    else if(idx === selectedOption) btn.classList.add('wrong');
+  });
+  $('quizFeedback').innerHTML = `
+    <div class="feedback ${ok ? 'good' : 'bad'}">
+      <h3>${ok ? '✅ Correcto' : '❌ Incorrecto'}</h3>
+      <p><b>Correcta:</b> ${item.options[item.a]}</p>
+      <div class="hint">${item.hint}</div>
+      <button id="nextQuiz" class="accent" style="margin-top:12px">${quizIndex < quizOrder.length-1 ? 'Siguiente' : 'Ver resultado'}</button>
+    </div>
+  `;
+  $('nextQuiz').onclick = () => { quizIndex++; drawQuiz(); };
+}
+
+function init(){
+  renderMap();
+  $('btnHome').onclick = () => show('home');
+  $('btnMap').onclick = () => show('home');
+  $('btnGame').onclick = startGame;
+  $('btnQuiz').onclick = startQuiz;
+  $('homeGame').onclick = startGame;
+  $('homeQuiz').onclick = startQuiz;
+  $('backHome1').onclick = () => show('home');
+  $('backHome2').onclick = () => show('home');
+  $('restartGame').onclick = startGame;
+  $('restartQuiz').onclick = startQuiz;
+}
+init();
+</script>
+</body>
+</html>

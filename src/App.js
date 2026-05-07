@@ -34,6 +34,7 @@ const numberImages = {
 };
 
 function App() {
+  const [selectedView, setSelectedView] = useState('menu');
   const [language, setLanguage] = useState('en');
   const [rightCount, setRightCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
@@ -44,6 +45,13 @@ function App() {
   const [highlightedElement, setHighlightedElement] = useState(null);
   const [totalElements, setTotalElements] = useState(0);
   const [showChart, setShowChart] = useState(false);
+  const htmlPages = [
+    { label: 'TCP-IP Layers', fileName: 'TCP-IP Layers.html' },
+    { label: 'Preview', fileName: 'preview.html' },
+    { label: 'Protocolos Zoo RD2', fileName: 'protocolos_zoo_rd2.html' },
+    { label: 'RD2 Entrenador Diagramas TP', fileName: 'rd2_entrenador_diagramas_tp.html' },
+    { label: 'Redes Parcial', fileName: 'redes_parcial.html' }
+  ];
 
   const rightAudioRef = useRef(new Audio(rightSound));
   const wrongAudioRef = useRef(new Audio(clickSound));
@@ -207,10 +215,53 @@ function App() {
     return cols;
   };
 
+  const openHtmlPage = (fileName) => {
+    const pagePath = `${process.env.PUBLIC_URL}/${encodeURI(fileName)}`;
+    window.location.href = pagePath;
+  };
+
+  if (selectedView === 'menu') {
+    return (
+      <div className="menu-screen" style={{ backgroundImage: `url(${bgImage})` }}>
+        <div className="menu-screen__panel">
+          <h1 className="menu-screen__title">Periodic Table Pro</h1>
+          <p className="menu-screen__subtitle">Elegi una opcion para continuar</p>
+          <div className="menu-screen__buttons">
+            <button
+              type="button"
+              className="menu-screen__button"
+              onClick={() => setSelectedView('game')}
+            >
+              Periodic Table
+            </button>
+            {htmlPages.map((page) => (
+              <button
+                key={page.fileName}
+                type="button"
+                className="menu-screen__button"
+                onClick={() => openHtmlPage(page.fileName)}
+              >
+                {page.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="game" style={{ backgroundImage: `url(${bgImage})` }}>
       <div className="game__header">
-        <div className="game__left-spacer"></div>
+        <div className="game__left-spacer">
+          <button
+            type="button"
+            className="game__menu-button"
+            onClick={() => setSelectedView('menu')}
+          >
+            MENU
+          </button>
+        </div>
 
         <div className="game__center">
           <div className="game__score">

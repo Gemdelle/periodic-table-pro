@@ -97,7 +97,9 @@ function refreshDropdownOptions(field){
     const values = getSelectOptions(field);
     sel.innerHTML = `<option value="">${field === 'c' ? 'Elegí capa' : field === 'n' ? 'Elegí sigla' : 'Elegí qué hace'}</option>` +
       values
-        .filter(v => v === current || !used.has(v))
+        // En "Capa" (field=c) permitimos repetir el mismo valor en varias filas.
+        // En "Sigla" (n) y "Qué hace" (s) mantenemos la regla de ocultar opciones usadas.
+        .filter(v => v === current || field === 'c' || !used.has(v))
         .map(v => `<option value="${encodeURIComponent(v)}">${v}</option>`)
         .join('');
     if(current) sel.value = encodeURIComponent(current);
@@ -146,7 +148,7 @@ function startAllGame(){
         <tbody>${rows}</tbody>
       </table>
     </div>
-    <div class="compact-note">Tip: las opciones ya usadas desaparecen de los otros desplegables de la misma columna. Nota: “Mecanismo” no es una capa TCP/IP separada. Stop-and-Wait, Go-Back-N, Selective Repeat, CRC y FEC se ubican en Enlace / Acceso a la red porque trabajan con tramas, control de flujo o errores.</div>
+    <div class="compact-note">Tip: en "Capa" se permite repetir el mismo valor en distintas filas. En "Sigla" y "Qué hace" las opciones ya usadas se ocultan en los otros desplegables. Nota: “Mecanismo” no es una capa TCP/IP separada. Stop-and-Wait, Go-Back-N, Selective Repeat, CRC y FEC se ubican en Enlace / Acceso a la red porque trabajan con tramas, control de flujo o errores.</div>
     <div class="row" style="margin-top:12px">
       <button id="checkAllGame" class="accent">Comprobar todo</button>
       <button id="mixAllGame" class="secondary">Mezclar opciones</button>
